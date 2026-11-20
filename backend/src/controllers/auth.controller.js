@@ -1,17 +1,46 @@
-const supabase = require('../services/supabase');
+const jwt = require('jsonwebtoken')
 
-async function getUsers(req, res) {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*');
+const {
+  loginUser
+} = require('../services/auth.service');
 
-  if (error) {
-    return res.status(500).json(error);
+const login = async (req, res) => {
+  try {
+    const {
+      email,
+      password
+    } = req.body;
+
+    const user = await loginUser(
+      email,
+      password
+    );
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h'
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      token
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(401).json({
+      success: false,
+      message: 'Invalid credentials'
+    });
   }
-
-  res.json(data);
-}
+};
 
 module.exports = {
-  getUsers
+  login
 };
