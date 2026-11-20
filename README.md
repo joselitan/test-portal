@@ -1,4 +1,11 @@
 github database password nuwRan-sakveb-9rajhy
 project name = test-portal
-SUPABASE_URL https://ihtzkvrzogzkziwrgtmr.supabase.co/
-SUPABASE_KEY sb_publishable_v8f-VTbUD8_jg6AfMEgF_w_BW81bN7s
+
+
+echo "# test-portal" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/joselitan/test-portal.git
+git push -u origin main
