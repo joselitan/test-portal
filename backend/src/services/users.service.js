@@ -1,6 +1,6 @@
 const supabase = require('./supabase.service');
 
-const getAllUsers = async () => {
+const findAllUsers = async () => {
   const { data, error } = await supabase
     .from('users')
     .select('*');
@@ -12,7 +12,7 @@ const getAllUsers = async () => {
   return data;
 };
 
-const createUser = async (user) => {
+const createUserRecord = async (user) => {
     const { data, error } = await supabase
         .from('users')
         .insert(user)
@@ -23,9 +23,24 @@ const createUser = async (user) => {
     }
 
     return data;
+};
+
+const findUserById = async (id) => {
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', id)
+        .single();
+    
+    if (error) {
+        throw error;
+    }
+
+    return data;
 }
 
 module.exports = {
-  getAllUsers,
-  createUser
+  findAllUsers,
+  createUserRecord,
+  findUserById
 };
