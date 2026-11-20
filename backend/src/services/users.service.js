@@ -39,8 +39,40 @@ const findUserById = async (id) => {
     return data;
 }
 
+const updateUserRecord = async (id, updates) => {
+    const { data, error } = await supabase
+        .from('users')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if(error){
+        throw error;
+    }
+
+    return data;
+};
+
+const deleteUserRecord = async (id) => {
+    const { data, error } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', id)
+        .select()
+        .single();
+    
+    if (error) {
+        throw error;
+    }
+
+    return data;
+};
+
 module.exports = {
   findAllUsers,
   createUserRecord,
-  findUserById
+  findUserById,
+  updateUserRecord,
+  deleteUserRecord
 };
