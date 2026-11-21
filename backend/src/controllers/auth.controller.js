@@ -16,12 +16,11 @@ const login = async (req, res) => {
     const token = jwt.sign(
       {
         userId: user.id,
-        email: user.email
+        email: user.email,
+        roleId: user.role_id
       },
       process.env.JWT_SECRET,
-      {
-        expiresIn: '1h'
-      }
+      { expiresIn: '1h' }
     );
 
     res.status(200).json({

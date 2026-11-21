@@ -1,5 +1,7 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth')
+const authorize = require('../middleware/authorize')
+
 const router = express.Router();
 
 const {
@@ -16,16 +18,20 @@ router.get('/:id', getUser);
 router.post(
   '/',
   authMiddleware, 
-  createUser);
+  createUser
+);
 
 router.put(
   '/:id',
   authMiddleware, 
-  updateUser);
+  updateUser
+);
 
 router.delete(
   '/:id',
   authMiddleware, 
-  deleteUser);
+  authorize(1),   // Admin only
+  deleteUser
+);
 
 module.exports = router;
