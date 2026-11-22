@@ -4,6 +4,23 @@ if (!token) {
     window.location.href = 'login.html';
 }
 
+const logoutLink = 
+    document.getElementById('logoutLink');
+if (logoutLink) {
+
+    logoutLink.addEventListener(
+        'click',
+        (event) => {
+
+            event.preventDefault();
+
+            localStorage.removeItem('token');
+
+            window.location.href = 'login.html';
+        }
+    );
+}
+
 const usersTableBody =
     document.getElementById('usersTableBody');
 

@@ -3,18 +3,17 @@ body {
 
     background-color: #f4f4f4;
 
-    display: flex;
-    justify-content: center;
-
-    padding-top: 50px;
+    margin: 0;
 }
 
 .dashboard-container {
     background: white;
 
-    padding: 2rem;
-
     width: 500px;
+
+    margin: 40px auto;
+
+    padding: 2rem;
 
     border-radius: 8px;
 

@@ -4,6 +4,24 @@ if (!token) {
     window.location.href = 'login.html';
 }
 
+const logoutLink =
+    document.getElementById('logoutLink');
+
+if (logoutLink) {
+
+    logoutLink.addEventListener(
+        'click',
+        (event) => {
+
+            event.preventDefault();
+
+            localStorage.removeItem('token')
+
+            window.location.href = 'login.html';
+        }
+    );
+}
+
 const payload = JSON.parse(
     atob(token.split('.')[1])
 );
