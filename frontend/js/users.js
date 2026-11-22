@@ -7,6 +7,24 @@ if (!token) {
 const usersTableBody =
     document.getElementById('usersTableBody');
 
+function showToast(message, type = 'success') {
+
+    const toast =
+        document.getElementById('toast');
+    
+    toast.textContent = message;
+
+    toast.className =
+        `toast toast-${type}`;
+    
+    setTimeout(() => {
+
+        toast.className =
+            'toast hidden';
+    
+    }, 3000);
+}
+
 async function loadUsers() {
 
     const response = await fetch(
@@ -78,6 +96,10 @@ async function deleteUser(id) {
         }
     );
 
+    showToast(
+        'User deleted successfully'
+    );
+
     loadUsers();
 }
 
@@ -119,6 +141,7 @@ document
                         })
                     }
                 );
+                showToast('User updated successfully');
 
             } else {
 
@@ -139,6 +162,7 @@ document
                         })
                     }
                 );
+                    showToast('User created successfully');
             }
 
             document
