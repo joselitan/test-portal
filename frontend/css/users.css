@@ -56,3 +56,13 @@ button {
 .hidden {
     display: none;
 }
+
+#searchInput {
+    width: 100%;
+
+    padding: 10px;
+
+    margin-bottom: 20px;
+
+    box-sizing: border-box;
+}

@@ -24,6 +24,8 @@ if (logoutLink) {
 const usersTableBody =
     document.getElementById('usersTableBody');
 
+let allUsers = [];
+
 function showToast(message, type = 'success') {
 
     const toast =
@@ -42,13 +44,7 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-async function loadUsers() {
-
-    const response = await fetch(
-        'http://localhost:3000/api/users'
-    );
-
-    const users = await response.json();
+function renderUsers(users) {
 
     usersTableBody.innerHTML = '';
 
@@ -71,7 +67,20 @@ async function loadUsers() {
         `;
 
         usersTableBody.appendChild(row);
-    });
+    })
+}
+
+async function loadUsers() {
+
+    const response = await fetch(
+        'http://localhost:3000/api/users'
+    );
+
+    //const users = await response.json();
+    allUsers = await response.json();
+
+    renderUsers(allUsers);
+
 }
 
 async function editUser(id) {
@@ -194,4 +203,29 @@ document
         }
     );
 
+document
+    .getElementById('searchInput')
+    .addEventListener(
+        'input',
+        (event) => {
+
+            const searchText = 
+                event.target.value.toLowerCase();
+            
+            const filteredUsers =
+                allUsers.filter(user => 
+
+                    user.username
+                        .toLowerCase()
+                        .includes(searchText)
+                    
+                    ||
+
+                    user.email  
+                        .toLowerCase()
+                        .includes(searchText)
+                );
+            renderUsers(filteredUsers);
+        }
+    )
 loadUsers();
