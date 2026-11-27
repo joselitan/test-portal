@@ -114,6 +114,11 @@ async function editUser(id) {
 
     document.getElementById('email').value =
         user.email;
+
+    document.getElementById('roleId').value =
+        user.role_id;
+    
+    document.getElementById('password').value = '';
 }
 
 async function deleteUser(id) {
@@ -164,6 +169,11 @@ document
             const password =
                 document.getElementById('password').value;
 
+            const role_id =
+                parseInt(
+                    document.getElementById('roleId').value
+                );
+
             if (userId) {
 
                 await fetch(
@@ -178,7 +188,8 @@ document
 
                         body: JSON.stringify({
                             username,
-                            email
+                            email,
+                            role_id
                         })
                     }
                 );
@@ -199,7 +210,8 @@ document
                         body: JSON.stringify({
                             username,
                             email,
-                            password_hash: password
+                            password_hash: password,
+                            role_id
                         })
                     }
                 );
