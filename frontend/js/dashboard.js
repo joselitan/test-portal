@@ -48,3 +48,23 @@ document
         window.location.href = 
             'login.html';
     });
+
+async function loadStatistics() {
+
+    const response = await fetch (
+        'http://localhost:3000/api/users/stats'
+    )
+
+    const stats = await response.json();
+
+    document.getElementById('totalUsers')
+        .textContent = stats.totalUsers;
+
+    document.getElementById('adminUsers')
+        .textContent = stats.admins;
+    
+    document.getElementById('normalUsers')
+        .textContent = stats.normalUsers;
+}
+
+loadStatistics();

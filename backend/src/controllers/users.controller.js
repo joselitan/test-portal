@@ -49,6 +49,35 @@ const getUser = async (req, res) => {
     }
 };
 
+const getUserStats = async (req, res) => {
+    try {
+        const users = await findAllUsers();
+
+        const totalUsers = users.length;
+
+        const admins = users.filter(
+            user => user.role_id === 1
+        ).length;
+
+        const normalUsers = users.filter(
+            user => user.role_id === 3
+        ).length;
+
+        res.status(200).json({
+            totalUsers,
+            admins,
+            normalUsers
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch statistics'
+        });
+    }
+};
+
 const updateUser = async (req, res) => {
     try {
         const updatedUser = await updateUserRecord(
@@ -93,5 +122,6 @@ module.exports = {
   createUser,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserStats
 };

@@ -9,10 +9,12 @@ const {
   getUser, 
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getUserStats
 } = require('../controllers/users.controller');
 
 router.get('/', getUsers);
+router.get('/stats', getUserStats)
 router.get('/:id', getUser);
 
 router.post(
