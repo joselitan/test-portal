@@ -44,6 +44,19 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
+let filteredUsers = [];
+
+function getRoleName(roleId) {
+    switch (roleId) {
+        case 1:
+            return 'Admin';
+        case 3:
+            return 'User';
+        default:
+            return 'No Role';
+    }
+}
+
 function renderUsers(users) {
 
     usersTableBody.innerHTML = '';
@@ -55,6 +68,7 @@ function renderUsers(users) {
         row.innerHTML = `
             <td>${user.username}</td>
             <td>${user.email}</td>
+            <td>${getRoleName(user.role_id)}</td>
             <td>
                 <button onclick="editUser('${user.id}')">
                     Edit
@@ -69,6 +83,7 @@ function renderUsers(users) {
         usersTableBody.appendChild(row);
     })
 }
+
 
 async function loadUsers() {
 

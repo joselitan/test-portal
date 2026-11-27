@@ -3,7 +3,10 @@ const supabase = require('./supabase.service');
 const findAllUsers = async () => {
   const { data, error } = await supabase
     .from('users')
-    .select('*');
+    .select(`
+        *,
+        roles!users_role_id_fkey(*)
+    `);
 
   if (error) {
     throw error;
