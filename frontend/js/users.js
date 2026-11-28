@@ -174,59 +174,148 @@ document
                     document.getElementById('roleId').value
                 );
 
-            if (userId) {
-
-                await fetch(
-                    `http://localhost:3000/api/users/${userId}`,
-                    {
-                        method: 'PUT',
-
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`
-                        },
-
-                        body: JSON.stringify({
-                            username,
-                            email,
-                            role_id
-                        })
-                    }
+            if (!username.trim()) {
+                showToast(
+                    'Username is required',
+                    'error'
                 );
-                showToast('User updated successfully');
-
-            } else {
-
-                await fetch(
-                    'http://localhost:3000/api/users',
-                    {
-                        method: 'POST',
-
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`
-                        },
-
-                        body: JSON.stringify({
-                            username,
-                            email,
-                            password_hash: password,
-                            role_id
-                        })
-                    }
-                );
-                    showToast('User created successfully');
+                return;
             }
 
-            document
-                .getElementById('createUserForm')
-                .reset();
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            document
-                .getElementById('userId')
-                .value = '';
+            if (!emailPattern.test(email)) {
+                showToast(
+                    'Please enter a valid email',
+                    'error'
+                );
+                return;
+            }
 
-            loadUsers();
+            if (!userId && password.length < 6) {
+                showToast(
+                    'Password must be at least 6 characters',
+                    'error'
+                );
+                return;
+            }
+
+            try {
+
+                if (userId) {
+
+                    const response = await fetch(
+                        `http://localhost:3000/api/users/${userId}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                username,
+                                email,
+                                role_id
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        showToast(
+                            'Failed to update user',
+                            'error'
+                        );
+                        return;
+                    }
+
+                    showToast(
+                        'User updated successfully'
+                    );
+
+                } else {
+
+                    const response = await fetch(
+                        'http://localhost:3000/api/users',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                username,
+                                email,
+                                password_hash: password,
+                                role_id
+                            })
+                        }
+                    );
+
+                    // if (!response.ok) {
+                    //     showToast(
+                    //         'Failed to create user',
+                    //         'error'
+                    //     );
+                    //     return;
+                    // }
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.log(error);
+                        console.log(error.message)
+                        if (
+                            error.message.includes(
+                                'username'
+                            )
+                        ){
+                            showToast(
+                                'Username already exist',
+                                'error'
+                            );
+                            return;
+                        }
+                        if (
+                            error.message.includes(
+                                'email'
+                            )
+                        ){
+                            showToast(
+                                'Email already exists',
+                                'error'
+                            )
+                            return;
+                        }
+                        showToast(
+                            error.message,
+                            'error'
+                        );
+                        return;
+                    }
+
+                    showToast(
+                        'User created successfully'
+                    );
+                }
+
+                document
+                    .getElementById('createUserForm')
+                    .reset();
+
+                document
+                    .getElementById('userId')
+                    .value = '';
+
+                loadUsers();
+
+            } catch (error) {
+
+                console.error(error);
+
+                showToast(
+                    'Unexpected error',
+                    'error'
+                );
+            }
         }
     );
 
